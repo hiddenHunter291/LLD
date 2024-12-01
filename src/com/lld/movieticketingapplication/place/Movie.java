@@ -1,4 +1,4 @@
-package com.lld.movieticketingapplication.model;
+package com.lld.movieticketingapplication.place;
 
 import java.time.Duration;
 
