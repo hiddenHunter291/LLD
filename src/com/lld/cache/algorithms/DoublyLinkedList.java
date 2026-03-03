@@ -14,15 +14,16 @@ public class DoublyLinkedList<E> {
         return this.head.item;
     }
 
-    public void add(final E item) {
+    public Node<E> add(final E item) {
         Node<E> a = createNode(item);
         if(isEmpty()) {
             head = tail = a;
-            return;
+            return a;
         }
         tail.next = a;
         a.prev = tail;
         tail = tail.next;
+        return tail;
     }
 
     public void remove(final Node<E> node) {
@@ -30,7 +31,9 @@ public class DoublyLinkedList<E> {
         Node<E> nextNode = node.next;
         if(prevNode == null) {
             head = head.next;
-            nextNode.prev = null;
+            if(nextNode != null) {
+                nextNode.prev = null;
+            }
             return;
         }
         prevNode.next = nextNode;

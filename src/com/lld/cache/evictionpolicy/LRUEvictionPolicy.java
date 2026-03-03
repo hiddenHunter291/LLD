@@ -1,6 +1,7 @@
 package com.lld.cache.evictionpolicy;
 
 import com.lld.cache.algorithms.DoublyLinkedList;
+import org.jetbrains.annotations.NotNull;
 
 import java.util.HashMap;
 import java.util.Map;
@@ -24,15 +25,15 @@ public class LRUEvictionPolicy<T> implements EvictionPolicy<T> {
     }
 
     @Override
-    public void keyAccessed(final T key) {
+    public void keyAccessed(@NotNull final T key) {
         if(!referenceMap.containsKey(key)) {
-           final DoublyLinkedList.Node<T> keyReference = new DoublyLinkedList.Node<>();
-           referenceMap.put(key, keyReference);
-           dll.add(key);
-           return;
+            final DoublyLinkedList.Node<T> keyReference = dll.add(key);
+            referenceMap.put(key, keyReference);
+            return;
         }
-        final DoublyLinkedList.Node<T> keyReference = referenceMap.get(key);
-        dll.remove(keyReference);
-        dll.add(key);
+        final DoublyLinkedList.Node<T> oldKeyReference = referenceMap.get(key);
+        dll.remove(oldKeyReference);
+        final DoublyLinkedList.Node<T> newKeyReference = dll.add(key);
+        referenceMap.put(key, newKeyReference);
     }
 }
